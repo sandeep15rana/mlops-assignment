@@ -1,0 +1,12 @@
+﻿.venv
+__pycache__
+*.pyc
+.git
+.gitignore
+.github
+mlruns
+report
+tests
+.pytest_cache
+*.log
+logs/*

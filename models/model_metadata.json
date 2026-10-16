@@ -1,0 +1,12 @@
+{
+    "best_model": "Logistic Regression",
+    "selection_metric": "test_roc_auc",
+    "score": 0.9664502164502166,
+    "metrics": {
+        "test_accuracy": 0.8852459016393442,
+        "test_precision": 0.8387096774193549,
+        "test_recall": 0.9285714285714286,
+        "test_f1": 0.8813559322033898,
+        "test_roc_auc": 0.9664502164502166
+    }
+}
