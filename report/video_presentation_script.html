@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>MLOps Assignment 01 - Video Presentation Script</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #24292e;
+            max-width: 850px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        h1, h2, h3 { color: #0366d6; border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+        blockquote {
+            background: #f6f8fa;
+            border-left: 4px solid #0366d6;
+            margin: 1.5em 0;
+            padding: 12px 18px;
+            font-style: italic;
+            color: #2f363d;
+        }
+        code {
+            background: #f0f2f5;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: Consolas, monospace;
+        }
+        pre {
+            background: #24292e;
+            color: #f8f8f2;
+            padding: 14px;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+        pre code { background: none; color: inherit; padding: 0; }
+        ul { padding-left: 20px; }
+        hr { border: 0; height: 1px; background: #eaecef; margin: 24px 0; }
+    </style>
+</head>
+<body>
+<p>﻿# Video Presentation Script: End-to-End MLOps Pipeline
+<strong>Course:</strong> BITS Pilani - AIMLCZG523 Machine Learning Operations<br />
+<strong>Assignment:</strong> 01 (Heart Disease Classification &amp; Production Deployment)<br />
+<strong>Target Duration:</strong> 3.5 to 4.5 Minutes<br />
+<strong>Student Name:</strong> [Your Name]<br />
+<strong>Student ID:</strong> [Your BITS Student ID]  </p>
+<hr />
+<h2>Pre-Recording Checklist</h2>
+<p>Before starting your screen recording (using OBS, Loom, or Windows Game Bar Win + G):
+- [ ] Open <strong>VS Code</strong> with the Assignment MLOps project.
+- [ ] Open the <strong>Terminal</strong> in VS Code with the virtual environment activated (.venv\Scripts\Activate.ps1).
+- [ ] Open <strong>Browser Tab 1:</strong> Your GitHub repository on the <strong>Actions</strong> tab (showing the green CI/CD build).
+- [ ] Open <strong>Browser Tab 2:</strong> MLflow UI at http://127.0.0.1:5000 (run .venv\Scripts\python -m mlflow ui in terminal).
+- [ ] Open <strong>Browser Tab 3:</strong> FastAPI Swagger UI at http://localhost:8000/docs (or your Minikube service URL).
+- [ ] Open <strong>Browser Tab 4:</strong> Prometheus metrics endpoint at http://localhost:8000/metrics.</p>
+<hr />
+<h2>Timed Video Script</h2>
+<h3>Part 1: Introduction &amp; Problem Statement (0:00 – 0:30)</h3>
+<ul>
+<li><strong>Visual on Screen:</strong> Title slide or VS Code showing README.md.</li>
+<li><strong>Spoken Audio:</strong><blockquote>
+<p>"Hello everyone and respected evaluators. My name is [Your Name], and this is my video presentation for MLOps Assignment 01 in course AIMLCZG523.</p>
+<p>The objective of this assignment is to design, develop, and deploy an end-to-end, production-ready machine learning solution following modern MLOps best practices.</p>
+<p>We built a binary classifier to predict the risk of heart disease using the UCI Cleveland dataset. The entire lifecycle is automated—covering data ingestion, reproducible preprocessing, experiment tracking with MLflow, automated CI/CD testing, containerization, Kubernetes deployment, and Prometheus monitoring."</p>
+</blockquote>
+</li>
+</ul>
+<hr />
+<h3>Part 2: Codebase Structure &amp; CI/CD Pipeline (0:30 – 1:15)</h3>
+<ul>
+<li><strong>Visual on Screen:</strong> Show the folder structure in VS Code, then switch to the GitHub repository <strong>Actions</strong> tab showing the green checkmark.</li>
+<li><strong>Spoken Audio:</strong><blockquote>
+<p>"Starting with our codebase architecture, we organized the project into modular, production-ready packages:
+- src/data handles automated downloading, cleaning, and a leak-free scikit-learn ColumnTransformer preprocessing pipeline.
+- src/models contains our training pipeline, hyperparameter evaluation, and standalone inference modules.
+- src/api serves the model via FastAPI with Pydantic validation.
+- k8s/ contains our Kubernetes deployment and LoadBalancer service manifests.</p>
+<p>Looking at our GitHub Actions CI/CD workflow (ci_cd.yml), every push automatically triggers three automated stages:
+1. Code linting and style enforcement using lake8,
+2. Automated unit testing with pytest and coverage tracking, and
+3. A verified model training step that produces and uploads pipeline artifacts.
+As you can see on screen, our latest pipeline run has completed with a green build."</p>
+</blockquote>
+</li>
+</ul>
+<hr />
+<h3>Part 3: Automated Unit Testing Suite (1:15 – 1:45)</h3>
+<ul>
+<li><strong>Visual on Screen:</strong> Switch to the terminal in VS Code and execute:
+  <code>powershell
+  .venv\Scripts\python -m pytest tests/ -v</code></li>
+<li><strong>Spoken Audio:</strong><blockquote>
+<p>"Next, let us run our automated unit test suite using Pytest.</p>
+<p>[Press Enter and let the 9 tests run]</p>
+<p>All 9 tests pass cleanly. Our unit test suite validates:
+- Data downloading and missing value handling,
+- Stratified train-test split integrity,
+- Preprocessing pipeline transformation consistency,
+- Model inference bounds and valid probability outputs in range 0 to 1,
+- And FastAPI endpoints—including /health, successful /predict, and HTTP 422 error handling for invalid patient inputs."</p>
+</blockquote>
+</li>
+</ul>
+<hr />
+<h3>Part 4: Experiment Tracking with MLflow (1:45 – 2:30)</h3>
+<ul>
+<li><strong>Visual on Screen:</strong> Switch to Browser Tab 2 showing <strong>MLflow UI</strong> (http://127.0.0.1:5000).</li>
+<li><strong>Spoken Audio:</strong><blockquote>
+<p>"For experiment tracking, we integrated MLflow under the experiment Heart_Disease_Classification.</p>
+<p>We benchmarked two distinct classification algorithms using 5-Fold Stratified Cross-Validation on the training set:
+1. A Logistic Regression classifier with L2 regularization, and
+2. A Random Forest ensemble classifier.</p>
+<p>As seen in the comparison table:
+- Logistic Regression achieved a 5-Fold CV ROC-AUC of 0.9025 and a Test ROC-AUC of 0.9665, with an outstanding clinical recall of 92.86%.
+- Random Forest achieved a 0.8951 CV ROC-AUC and 0.9426 Test ROC-AUC.</p>
+<p>[Click on the Logistic Regression run and scroll down to Artifacts]</p>
+<p>For every experiment run, MLflow automatically logged all hyperparameters, cross-validation metrics, the complete serialized scikit-learn pipeline, and diagnostic plots—including the Confusion Matrix and ROC Curve.
+Because Logistic Regression provided superior clinical recall and ROC-AUC, it was selected and exported to models/best_model.joblib for production serving."</p>
+</blockquote>
+</li>
+</ul>
+<hr />
+<h3>Part 5: Production Deployment &amp; Live Inference (2:30 – 3:20)</h3>
+<ul>
+<li><strong>Visual on Screen:</strong> Switch to terminal and run:
+  <code>powershell
+  kubectl get pods -l app=heart-disease-api
+  kubectl get svc heart-disease-service</code>
+  Then switch to Browser Tab 3 showing <strong>FastAPI Swagger UI</strong> (/docs).</li>
+<li><strong>Spoken Audio:</strong><blockquote>
+<p>"For production deployment, the application is packaged in a lightweight Docker container and deployed to Kubernetes.</p>
+<p>In the terminal, running kubectl get pods shows our deployment actively running two healthy replicas with CPU and memory limits, as well as configured liveness and readiness health probes.</p>
+<p>The service is exposed via a LoadBalancer.</p>
+<p>[Switch to Swagger UI at /docs]</p>
+<p>Let's test live inference using the interactive Swagger UI. Under POST /predict, we submit a sample patient payload containing age, blood pressure, cholesterol, resting ECG, and clinical test features.</p>
+<p>[Click 'Try it out' -&gt; 'Execute']</p>
+<p>The API processes the request through our bundled preprocessing pipeline and returns a response in under 30 milliseconds:
+- Prediction:   (Heart Disease Absent),
+- Risk Probability:  .1859,
+- And Clinical Risk Category: Low."</p>
+</blockquote>
+</li>
+</ul>
+<hr />
+<h3>Part 6: Logging &amp; Monitoring (3:20 – 3:45)</h3>
+<ul>
+<li><strong>Visual on Screen:</strong> Switch to Browser Tab 4 showing /metrics, then briefly show logs/api.log in VS Code.</li>
+<li><strong>Spoken Audio:</strong><blockquote>
+<p>"For observability and production monitoring:
+- We integrated prometheus-fastapi-instrumentator. Calling /metrics exposes real-time Prometheus metrics, including HTTP request counts, response latency histograms, and status codes.
+- In addition, every request, duration, client IP, and prediction outcome is structured and written to logs/api.log for auditing and compliance."</p>
+</blockquote>
+</li>
+</ul>
+<hr />
+<h3>Part 7: Conclusion (3:45 – 4:00)</h3>
+<ul>
+<li><strong>Visual on Screen:</strong> Return to the GitHub repository homepage or closing slide.</li>
+<li><strong>Spoken Audio:</strong><blockquote>
+<p>"To conclude, this project demonstrates a complete, automated, and reproducible MLOps lifecycle—from data ingestion and MLflow experiment tracking to containerized Kubernetes deployment, automated CI/CD testing, and live monitoring.</p>
+<p>All source code, manifests, tests, and documentation are available in the repository. Thank you very much!"</p>
+</blockquote>
+</li>
+</ul>
+<hr />
+<h2>Submission Tips</h2>
+<ol>
+<li><strong>Resolution:</strong> Record your screen at <strong>1080p (Full HD)</strong> so text in the terminal and Swagger UI is clearly readable.</li>
+<li><strong>Audio:</strong> Speak clearly at a moderate, confident pace.</li>
+<li><strong>Link Sharing:</strong> If submitting via Google Drive, make sure link access is set to:<br />
+   "Anyone with the link can view".</li>
+</ol>
+</body>
+</html>
